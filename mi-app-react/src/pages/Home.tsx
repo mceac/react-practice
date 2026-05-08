@@ -1,14 +1,14 @@
-import { useUsers } from '../hooks/useUsers'
+import { useUsers } from "../features/users/hooks/useUsers";
 
 export default function Home() {
-  const { users } = useUsers()
+  const { users } = useUsers();
 
   return (
     <div>
       <h1>Usuarios</h1>
-      {users.map(u => (
+      {users.map((u) => (
         <p key={u.id}>{u.name}</p>
       ))}
     </div>
-  )
+  );
 }

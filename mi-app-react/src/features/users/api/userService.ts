@@ -1,3 +1,5 @@
+import type { CreateUserDto } from "../types/user";
+
 const API_URL = `${import.meta.env.VITE_API_URL}/Users`;
 
 export const getUsers = async () => {
@@ -10,7 +12,7 @@ export const getUsers = async () => {
   return response.json();
 };
 
-export const createUser = async (user: { name: string; email: string }) => {
+export const createUser = async (user: CreateUserDto) => {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -28,7 +30,8 @@ export const createUser = async (user: { name: string; email: string }) => {
 
 export const updateUser = async (
   id: number,
-  user: { name: string; email: string } ) => {
+  user: CreateUserDto
+) => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: {
