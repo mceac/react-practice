@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace ManagerApi.Controllers
 {
     [ApiController]
@@ -24,10 +22,6 @@ namespace ManagerApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var user = await _service.GetByIdAsync(id);
-
-            if (user == null)
-                return NotFound();
-
             return Ok(user);
         }
 
@@ -42,22 +36,14 @@ namespace ManagerApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateUserDto dto)
         {
-            var updated = await _service.UpdateAsync(id, dto);
-
-            if (!updated)
-                return NotFound();
-
+            await _service.UpdateAsync(id, dto);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _service.DeleteAsync(id);
-
-            if (!deleted)
-                return NotFound();
-
+            await _service.DeleteAsync(id);
             return NoContent();
         }
     }

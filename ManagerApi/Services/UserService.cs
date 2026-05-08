@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ManagerApi.Exceptions;
 
 public class UserService : IUserService
 {
@@ -21,11 +22,14 @@ public class UserService : IUserService
             .ToListAsync();
     }
 
-    public async Task<UserDetailDto?> GetByIdAsync(int id)
+    public async Task<UserDetailDto> GetByIdAsync(int id)
     {
         var user = await _context.Users.FindAsync(id);
 
-        if (user == null) return null;
+        if (user == null)
+        {
+            throw new NotFoundException($"User with id {id} was not found.");
+        }
 
         return new UserDetailDto
         {
@@ -54,28 +58,31 @@ public class UserService : IUserService
         };
     }
 
-    public async Task<bool> UpdateAsync(int id, UpdateUserDto dto)
+    public async Task UpdateAsync(int id, UpdateUserDto dto)
     {
         var user = await _context.Users.FindAsync(id);
 
-        if (user == null) return false;
+        if (user == null)
+        {
+            throw new NotFoundException($"User with id {id} was not found.");
+        }
 
         user.Name = dto.Name;
         user.Email = dto.Email;
 
         await _context.SaveChangesAsync();
-        return true;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         var user = await _context.Users.FindAsync(id);
 
-        if (user == null) return false;
+        if (user == null)
+        {
+            throw new NotFoundException($"User with id {id} was not found.");
+        }
 
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
-
-        return true;
     }
 }
